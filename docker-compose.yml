@@ -1,0 +1,10 @@
+version: "2.2"
+services:
+  simples-nacional:
+    image: docker.pkg.github.com/fabricioadenir/simples-nacional/simples-nacional:0.0.1
+    container_name: simples-nacional
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: 'prod'
+      PYTHONDONTWRITEBYTECODE: 1
