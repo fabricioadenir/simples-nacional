@@ -1,7 +1,8 @@
 from fastapi import APIRouter
-from datetime import datetime, time
+from datetime import datetime
 from ... import config
 
+from ..schemas.health import Health
 import requests
 from http import HTTPStatus
 from loguru import logger
@@ -11,9 +12,14 @@ from dateutil.zoneinfo import get_zonefile_instance
 router = APIRouter()
 
 
-@router.get("/health")
+@router.get("/health", response_model=Health)
 async def health():
-    logger.info("Checando a saúde da API.")
+    """Disponibiliza a saúde da API
+
+    Returns:
+        health: Retorna um Json com informações importantes da API.
+    """
+    logger.info("HealthCheck da API.")
 
     def _get_up_time(start_time):
         default_zone = get_zonefile_instance()
@@ -33,16 +39,12 @@ async def health():
         except Exception:
             return False
 
-    health = {
-        "name": config.PROJECT_NAME,
-        "description": config.PROJECT_DESCRIPTION,
-        "version": config.PROJECT_VERSION,
-        "timestamp": datetime.now(),
-        "uptime": _get_up_time(config.START_TIME),
-        "dependencies": []
-    }
+    health = Health(
+        timestamp=datetime.now(),
+        uptime=_get_up_time(config.START_TIME)
+    )
 
-    health["dependencies"].append(
+    health.dependencies.append(
         {"name": "SimplesNacional",
          "status": check_dependencies(config.SIMPLES_URL)}
     )

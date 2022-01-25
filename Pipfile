@@ -4,15 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
-uvicorn = {extras = ["standard"], version = "*"}
-python-decouple = "*"
-loguru = "*"
-requests = "*"
-python-dateutil = "*"
+fastapi = "==0.65.2"
+uvicorn = {extras = ["standard"], version = "==0.14.0"}
+python-decouple = "==3.4"
+loguru = "==0.5.3"
+requests = "==2.25.1"
+python-dateutil = "==2.8.1"
+pyyaml = "==5.4.1"
+captcha-pc-2 = "==3.1.7"
+rpaframework = "==10.4.0"
+anticaptchaofficial = "==1.0.31"
 
 [dev-packages]
 autopep8 = "*"
+flake8 = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.7"
