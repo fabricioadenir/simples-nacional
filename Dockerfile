@@ -1,16 +1,20 @@
-FROM python:3.7-alpine3.10
+FROM python:3.7-slim
 
-RUN apk add --update alpine-sdk libxml2-dev libxslt-dev linux-headers python3-dev libffi-dev musl-dev
-RUN apk add --update openssl-dev python-dev
+WORKDIR /app
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# both files are explicitly required!
+ADD Pipfile ./
+ADD Pipfile.lock ./
 
-COPY Pipfile /usr/src/app/
+RUN pip install pipenv && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends gcc python3-dev libssl-dev && \
+  pipenv install --deploy --system && \
+  apt-get remove -y gcc python3-dev libssl-dev && \
+  apt-get autoremove -y && \
+  pip uninstall pipenv -y
 
-RUN pipenv install --system --deploy --ignore-pipfile
-
-COPY . /usr/src/app
+ADD . .
 
 EXPOSE 8000
 

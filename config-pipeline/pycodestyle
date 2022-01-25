@@ -1,0 +1,5 @@
+[pycodestyle]
+count = True
+max-line-length = 100
+exclude = .tox/,tests,env,virtualenv
+statistics = True
